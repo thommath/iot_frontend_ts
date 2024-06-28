@@ -15,11 +15,11 @@ import "./App.css";
 import { formatTimestamp, parseTimestamp } from "./util";
 
 function App() {
-  const [openImageViewer, setOpenImageViewer] = useState(true);
+  const [openImageViewer, setOpenImageViewer] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const { data, error, isLoading } = useQuery<Album>({
-    queryFn: () => getAlbum({ albumId: "9qvhmckg" }),
+    queryFn: () => getAlbum({ albumId: "stc5pps7" }),
     queryKey: ["albums"],
   });
 
@@ -90,6 +90,7 @@ function App() {
             className="thumbnail"
             onClick={() => openImage(photo.id)}
             alt={photo.filename}
+            loading="lazy"
           />
         ))}
       </div>
