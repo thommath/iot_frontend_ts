@@ -1,5 +1,4 @@
-import { Grid, IconButton, Modal } from "@mui/material";
-import { useCallback, useState } from "react";
+import { Grid, IconButton, Modal, Typography } from "@mui/material";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import "./PhotoViewer.css";
@@ -9,20 +8,36 @@ import { Photo } from "./Types";
 type Props = {
   photos: Photo[];
   onClose: () => void;
+  currentImageIndex: number;
+  changePage: (changeAmount: number) => void;
 };
 
-export const PhotoViewer = (props: Props) => {
-  const [index, setIndex] = useState(0);
+export const PhotoViewer = ({
+  photos,
+  onClose,
+  currentImageIndex,
+  changePage,
+}: Props) => {
+  const photo = photos?.[currentImageIndex];
 
-  const changePage = useCallback(
-    (changeAmount: number) => {
-      setIndex((i) => (props.photos.length + i + changeAmount) % props.photos.length);
-    },
-    [setIndex]
-  );
+  if (!photo) {
+    return null;
+  }
 
   return (
-    <Modal open={true} component={"div"} onClose={props.onClose}>
+    <Modal
+      open={true}
+      component={"div"}
+      onClose={onClose}
+      slotProps={{
+        backdrop: {
+          sx: {
+            backgroundColor: "rgba(0, 0, 0, 0.95)",
+            maxHeight: "100vh",
+          },
+        },
+      }}
+    >
       <Grid
         container
         spacing={2}
@@ -33,10 +48,8 @@ export const PhotoViewer = (props: Props) => {
         }}
       >
         <Grid item xs={12} textAlign="right">
-          <IconButton
-            sx={{ color: "azure" }}
-            onClickCapture={() => props.onClose()}
-          >
+          <Typography variant="body2">{photo.filename}</Typography>
+          <IconButton sx={{ color: "azure" }} onClickCapture={() => onClose()}>
             <CloseIcon sx={{ fontSize: "2rem" }} />
           </IconButton>
         </Grid>
@@ -51,7 +64,7 @@ export const PhotoViewer = (props: Props) => {
         </Grid>
 
         <Grid item xs={10} textAlign="center" alignSelf="center">
-          <img src={props.photos[index].file_url} className="image" />
+          <img src={photo.file_url} className="photo" />
         </Grid>
 
         <Grid item xs={1} textAlign="center" alignSelf="center">

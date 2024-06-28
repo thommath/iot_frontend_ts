@@ -12,10 +12,31 @@ export type Photo = {
     "thumbnail_url": string
     "timestamp": string
 }
+
+export type ShareInfo = {
+    "admin": boolean,
+    "authorization": "READ" | "WRITE",
+    "owner": string,
+    "ownerFullName": string
+    "ownerAvatar": {
+        "profilePhotoUrl": string
+        "initials": string
+        "backgroundColor": string
+    },
+    "shareDate": number,
+    "subscriptionDate": number,
+    "uri": string
+}
+
 export type Album = {
     "id": string
     "coverPhoto": Photo
     "photos": Photo[]
     "title": string
     "bytes": number
+    "createdDate": number
+    "lastModified": number
+    "maxCapturedDate": number
+    "minCapturedDate": number
+    "shareInfo": ShareInfo
 }
