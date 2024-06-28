@@ -62,7 +62,12 @@ function App() {
         {data.title}
       </Typography>
 
-      <Grid container spacing={2} justifyContent="space-evenly" marginBottom="2rem">
+      <Grid
+        container
+        spacing={2}
+        justifyContent="space-evenly"
+        marginBottom="2rem"
+      >
         <Grid item>
           <Typography>Owner: {data.shareInfo.ownerFullName}</Typography>
         </Grid>
@@ -80,9 +85,11 @@ function App() {
       <div className="photoSlider">
         {photos.map((photo) => (
           <img
+            key={photo.id}
             src={photo.thumbnail_url + ".s"}
             className="thumbnail"
             onClick={() => openImage(photo.id)}
+            alt={photo.filename}
           />
         ))}
       </div>

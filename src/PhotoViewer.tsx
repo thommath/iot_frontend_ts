@@ -60,7 +60,13 @@ export const PhotoViewer = ({
           </IconButton>
         </div>
         <div className="grid-image">
-          <img src={photo.file_url} className="photo" />
+          <img
+            srcSet={`${photo.thumbnail_url}.s 240w, ${photo.thumbnail_url}.m 720w, ${photo.thumbnail_url}.l 1920w, ${photo.file_url} 2000w`}
+            sizes="(max-width: 240px) 240px, (max-width: 720px) 720px, (max-width: 1920px) 1920px, 2000px"
+            src={photo.file_url}
+            className="photo"
+            alt={photo.filename}
+          />
         </div>
         <div className="grid-left">
           <IconButton
