@@ -1,11 +1,42 @@
-
-
-button {
-    font-size: 4rem;
-    color: azure;
+.photo {
+  max-width: 100%;
+  max-height: calc(100vh - 8rem);
 }
 
-.photo {
-    max-width: 100%;
-    max-height: calc(100vh - 8rem);
+.grid {
+  display: grid;
+  grid-template-areas:
+    "header header header"
+    "leftButton image rightButton";
+  grid-template-rows: 4rem auto 4rem;
+
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+@media only screen and (max-width: 600px) {
+  .grid {
+    grid-template-areas:
+      "header header"
+      "image image"
+      "leftButton rightButton";
+  }
+}
+
+.grid-header {
+  grid-area: header;
+
+  text-align: right;
+  margin: 1rem;
+}
+.grid-image {
+  grid-area: image;
+}
+.grid-left {
+  grid-area: leftButton;
+}
+.grid-right {
+  grid-area: rightButton;
 }

@@ -62,7 +62,7 @@ function App() {
         {data.title}
       </Typography>
 
-      <Grid container spacing={2} justifyContent="space-evenly">
+      <Grid container spacing={2} justifyContent="space-evenly" marginBottom="2rem">
         <Grid item>
           <Typography>Owner: {data.shareInfo.ownerFullName}</Typography>
         </Grid>
@@ -77,17 +77,15 @@ function App() {
         </Grid>
       </Grid>
 
-      <Grid container spacing={2} marginTop="2rem">
+      <div className="photoSlider">
         {photos.map((photo) => (
-          <Grid item xs={12} sm={6} md={4} lg={2} key={photo.id}>
-            <img
-              src={photo.thumbnail_url + ".s"}
-              className="thumbnail"
-              onClick={() => openImage(photo.id)}
-            />
-          </Grid>
+          <img
+            src={photo.thumbnail_url + ".s"}
+            className="thumbnail"
+            onClick={() => openImage(photo.id)}
+          />
         ))}
-      </Grid>
+      </div>
 
       {openImageViewer && photos && (
         <PhotoViewer

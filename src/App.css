@@ -45,3 +45,18 @@
   height: 100%;
   cursor: pointer;
 }
+
+.photoSlider {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  overflow-x: auto;
+}
+
+.photoSlider > * {
+  display: flex;
+  height: 20rem;
+  width: 20rem;
+  max-width: 100%;
+  max-height: 100%;
+}

@@ -1,9 +1,10 @@
-import { Grid, IconButton, Modal, Typography } from "@mui/material";
+import { IconButton, Modal } from "@mui/material";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import "./PhotoViewer.css";
 import CloseIcon from "@mui/icons-material/Close";
 import { Photo } from "./Types";
+import { useEffect } from "react";
 
 type Props = {
   photos: Photo[];
@@ -19,6 +20,20 @@ export const PhotoViewer = ({
   changePage,
 }: Props) => {
   const photo = photos?.[currentImageIndex];
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      console.log(e.key);
+      if (e.key === "ArrowLeft") {
+        changePage(-1);
+      }
+      if (e.key === "ArrowRight") {
+        changePage(+1);
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [changePage]);
 
   if (!photo) {
     return null;
@@ -38,46 +53,32 @@ export const PhotoViewer = ({
         },
       }}
     >
-      <Grid
-        container
-        spacing={2}
-        alignItems="space-between"
-        sx={{
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        <Grid item xs={12} textAlign="right">
-          <Typography variant="body2">{photo.filename}</Typography>
+      <div className="grid">
+        <div className="grid-header">
           <IconButton sx={{ color: "azure" }} onClickCapture={() => onClose()}>
             <CloseIcon sx={{ fontSize: "2rem" }} />
           </IconButton>
-        </Grid>
-
-        <Grid item xs={1} textAlign="center" alignSelf="center">
+        </div>
+        <div className="grid-image">
+          <img src={photo.file_url} className="photo" />
+        </div>
+        <div className="grid-left">
           <IconButton
             sx={{ color: "azure" }}
             onClickCapture={() => changePage(-1)}
           >
             <KeyboardArrowLeftIcon sx={{ fontSize: "4rem" }} />
           </IconButton>
-        </Grid>
-
-        <Grid item xs={10} textAlign="center" alignSelf="center">
-          <img src={photo.file_url} className="photo" />
-        </Grid>
-
-        <Grid item xs={1} textAlign="center" alignSelf="center">
+        </div>
+        <div className="grid-right">
           <IconButton
             sx={{ color: "azure" }}
             onClickCapture={() => changePage(+1)}
           >
             <KeyboardArrowRightIcon sx={{ fontSize: "4rem" }} />
           </IconButton>
-        </Grid>
-
-        <Grid item xs={12} textAlign="center"></Grid>
-      </Grid>
+        </div>
+      </div>
     </Modal>
   );
 };
