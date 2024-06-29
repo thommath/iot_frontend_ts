@@ -1,109 +1,65 @@
-import React, { useCallback, useState } from "react";
-import logo from "./logo.svg";
-import { useQuery } from "@tanstack/react-query";
-import { getAlbum } from "./api";
-import {
-  Box,
-  CircularProgress,
-  Container,
-  Grid,
-  Typography,
-} from "@mui/material";
-import { Album } from "./Types";
-import { PhotoViewer } from "./PhotoViewer";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import { formatTimestamp, parseTimestamp } from "./util";
+import { FirmwarePage } from "./pages/firmware";
+import { useAuth0 } from "@auth0/auth0-react";
+import { LoginPage } from "./pages/login";
+import { CircularProgress } from "@mui/material";
+import { AppContext } from "./contexts/AppContext";
+import { useEffect, useState } from "react";
+
 
 function App() {
-  const [openImageViewer, setOpenImageViewer] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { isLoading, error, isAuthenticated, getAccessTokenSilently } =
+    useAuth0();
+  const [token, setToken] = useState<string | null>(null);
+  const [tokenError, setTokenError] = useState<string | null>(null);
 
-  const { data, error, isLoading } = useQuery<Album>({
-    queryFn: () => getAlbum({ albumId: "stc5pps7" }),
-    queryKey: ["albums"],
-  });
 
-  const photos = data?.photos;
-  const changePage = useCallback(
-    (changeAmount: number) => {
-      if (!photos) return;
-      setCurrentImageIndex(
-        (i) => (photos.length + i + changeAmount) % photos.length
-      );
-    },
-    [photos, setCurrentImageIndex]
-  );
-
-  const openImage = useCallback(
-    (imageId: string) => {
-      if (!photos) return;
-      setCurrentImageIndex(photos.findIndex((photo) => photo.id === imageId));
-      setOpenImageViewer(true);
-    },
-    [photos]
-  );
+  useEffect(() => {
+    if (isAuthenticated) {
+      (async () => {
+        try {
+          const token = await getAccessTokenSilently({
+            authorizationParams: {
+              audience: "https://iot.mashaogthomas.no", // Value in Identifier field for the API being called.
+            },
+          });
+          setToken(token);
+        } catch (error) {
+          console.error(error);
+          setTokenError(String(error));
+        }
+      })();
+    }
+  }, [isAuthenticated, getAccessTokenSilently]);
 
   if (error) {
-    // Report error to mertics service
     console.error(error);
-    return (
-      <Box>
-        <Typography>An error has occured, please send help.</Typography>
-      </Box>
-    );
+    return <div>Error: {error.name}</div>;
   }
-  if (isLoading || !photos) {
+  if (tokenError) {
+    return <div>Error: {tokenError}</div>;
+  }
+
+  if (isLoading) {
     return <CircularProgress />;
   }
+  if (!isAuthenticated) {
+    return <LoginPage />;
+  }
 
+  if (!token) {
+    return <CircularProgress />;
+  }
   return (
-    <div className="App">
-      <Typography variant="h2" marginBottom="2rem">
-        {data.title}
-      </Typography>
-
-      <Grid
-        container
-        spacing={2}
-        justifyContent="space-evenly"
-        marginBottom="2rem"
-      >
-        <Grid item>
-          <Typography>Owner: {data.shareInfo.ownerFullName}</Typography>
-        </Grid>
-        <Grid item>
-          <Typography>
-            From {formatTimestamp(parseTimestamp(data.minCapturedDate))} to{" "}
-            {formatTimestamp(parseTimestamp(data.maxCapturedDate))}
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Typography>Contains {data.photos.length} images</Typography>
-        </Grid>
-      </Grid>
-
-      <div className="photoSlider">
-        {photos.map((photo) => (
-          <img
-            key={photo.id}
-            src={photo.thumbnail_url + ".s"}
-            className="thumbnail"
-            onClick={() => openImage(photo.id)}
-            alt={photo.filename}
-            loading="lazy"
-          />
-        ))}
-      </div>
-
-      {openImageViewer && photos && (
-        <PhotoViewer
-          photos={photos}
-          onClose={() => setOpenImageViewer(false)}
-          changePage={changePage}
-          currentImageIndex={currentImageIndex}
-        />
-      )}
-    </div>
+    <AppContext.Provider value={{ token }}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" Component={null} />
+          <Route path="/firmware" Component={FirmwarePage} />
+        </Routes>
+      </BrowserRouter>
+    </AppContext.Provider>
   );
 }
 
