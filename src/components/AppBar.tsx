@@ -130,7 +130,10 @@ function ResponsiveAppBar() {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Logout">
-              <IconButton onClick={() => logout()} sx={{ p: 0 }}>
+              <IconButton
+                onClick={() => logout()}
+                sx={{ p: 0, color: "white" }}
+              >
                 <LogoutIcon />
               </IconButton>
             </Tooltip>

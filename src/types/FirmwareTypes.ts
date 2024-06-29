@@ -9,4 +9,12 @@ export type Firmware = {
     size: number;
     date: number;
     platform: string;
+    program: string;
+}
+
+export type AddFirmwareDto = {
+    version: number;
+    platform: string;
+    program: string;
+    file: File;
 }
