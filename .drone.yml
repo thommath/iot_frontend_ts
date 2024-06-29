@@ -2,7 +2,7 @@ kind: pipeline
 type: kubernetes
 name: iot-frontend-ts
 steps:
-- name: build-server
+- name: build-frontend
   image: docker:dind
   volumes:
   - name: docker_sock
