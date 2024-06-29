@@ -14,7 +14,7 @@ steps:
 - name: update manifest repo
   image: alpine/git
   commands:
-    - git clone https://github.com/thommath/Homeserver-CD.git
+    - git clone git@github.com:thommath/Homeserver-CD.git
     - cd Homeserver-CD
 
     - wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O yq
