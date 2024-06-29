@@ -37,6 +37,11 @@ export const FirmwareFormModal = ({ knownPrograms, open, onClose }: Props) => {
     },
   });
 
+  const { control, handleSubmit, setValue, watch, reset } =
+    useForm<AddFirmwareDto>({
+      defaultValues: {},
+    });
+
   const submit = async (data: any) => {
     // The library for forms is setting the wrong values
     // so I compensate by unpacking options
@@ -49,12 +54,9 @@ export const FirmwareFormModal = ({ knownPrograms, open, onClose }: Props) => {
       .reduce((acc, cur) => ({ ...acc, ...cur }), {}) as AddFirmwareDto;
 
     await mutateAsync(unpackValues);
+    reset();
     onClose();
   };
-
-  const { control, handleSubmit, setValue, watch } = useForm<AddFirmwareDto>({
-    defaultValues: {},
-  });
 
   const platformOptions = [
     { id: "ESP32", label: "ESP32" },

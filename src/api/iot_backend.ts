@@ -1,4 +1,5 @@
-import { AddFirmwareDto, Firmware, FirmwareResponse } from "../types/FirmwareTypes";
+import { AddDeviceDto, DeviceResponse } from "../types/DeviceTypes";
+import { AddFirmwareDto, FirmwareResponse } from "../types/FirmwareTypes";
 
 // To get fetch to properly work with react query
 const fetchWrapper = async <T>(input: RequestInfo | URL, init?: RequestInit | undefined) => {
@@ -15,6 +16,7 @@ export const iotBackendBaseUrl = "https://iot.mashaogthomas.no/api/";
 type PostApiType = {
     body: BodyInit | null | undefined;
     method: "GET" | "POST" | "DELETE";
+    contentType: string;
 }
 type ApiAuth = {
     token: string;
@@ -22,15 +24,18 @@ type ApiAuth = {
 
 type BaseApiType = ApiAuth & Partial<PostApiType>;
 
-const apiWrapper = <T>(url: string, { token, method, body }: BaseApiType) =>
-    fetchWrapper<T>(url, {
+const apiWrapper = <T>(url: string, { token, method, body, contentType }: BaseApiType) => {
+    const headers: Record<string, string> = {};
+    headers["Authorization"] = `Bearer ${token}`;
+    if (contentType) {
+        headers["Content-Type"] = contentType;
+    }
+    return fetchWrapper<T>(url, {
         method,
         body,
-        headers: {
-            Authorization: `Bearer ${token}`,
-        }
+        headers,
     })
-
+}
 
 
 export const getFirmware = (params: BaseApiType) => apiWrapper<FirmwareResponse>(iotBackendBaseUrl + "images", params);
@@ -60,3 +65,31 @@ export const deleteFirmware = (params: DeleteFirmwareType) => apiWrapper<"ok">(i
     token: params.token,
     method: "DELETE",
 });
+
+
+
+export const getDevices = (params: BaseApiType) => apiWrapper<DeviceResponse>(iotBackendBaseUrl + "clients", params);
+
+type SaveDeviceType = BaseApiType & {
+    data: AddDeviceDto
+}
+
+export const saveDevice = (params: SaveDeviceType) => apiWrapper<"OK">(iotBackendBaseUrl + "client", {
+    token: params.token,
+    body: JSON.stringify(params.data),
+    method: "POST",
+    contentType: "application/json",
+});
+
+type DeleteDeviceType = BaseApiType & {
+    id: string
+}
+export const deleteDevice = (params: DeleteDeviceType) => {
+    console.log(params)
+    return apiWrapper(iotBackendBaseUrl + "client/delete", {
+        token: params.token,
+        body: JSON.stringify({ id: params.id }),
+        method: "POST",
+        contentType: "application/json",
+    });
+}

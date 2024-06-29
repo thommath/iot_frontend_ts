@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Paper,
   Typography,
 } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -134,14 +135,16 @@ export const FirmwarePage = () => {
 
   return (
     <Page title="Firmware" titleEndSlot={AddButton}>
-      <Box>
-        <Table columns={columns} rows={data.updates} />
-      </Box>
-      <FirmwareFormModal
-        open={openCreateForm}
-        onClose={() => setOpenCreateForm(false)}
-        knownPrograms={knownPrograms}
-      />
+      <Paper>
+        <Box>
+          <Table columns={columns} rows={data.updates} />
+        </Box>
+        <FirmwareFormModal
+          open={openCreateForm}
+          onClose={() => setOpenCreateForm(false)}
+          knownPrograms={knownPrograms}
+        />
+      </Paper>
     </Page>
   );
 };

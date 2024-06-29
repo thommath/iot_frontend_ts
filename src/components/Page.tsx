@@ -33,7 +33,7 @@ export const Page = ({ title, children, titleEndSlot }: Props) => {
           <Box>{titleEndSlot}</Box>
         </Stack>
 
-        <Paper>{children}</Paper>
+        {children}
       </Container>
     </>
   );
