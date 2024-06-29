@@ -1,6 +1,6 @@
 import { Box, CircularProgress, Typography } from "@mui/material";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Firmware, FirmwareResponse } from "../types/FirmwareTypes";
+import { useQuery } from "@tanstack/react-query";
+import { Firmware } from "../types/FirmwareTypes";
 import { getFirmware } from "../api/iot_backend";
 import { useContext } from "react";
 import { AppContext } from "../contexts/AppContext";
@@ -8,6 +8,7 @@ import { Table } from "../components/Table";
 import { GridColDef } from "@mui/x-data-grid";
 import { formatFileSize } from "../util/fileSize";
 import { formatTimestamp, parseTimestamp } from "../util/dateUtils";
+import { Page } from "../components/Page";
 
 const columns: GridColDef<Firmware>[] = [
   {
@@ -52,12 +53,18 @@ export const FirmwarePage = () => {
     );
   }
   if (isLoading || !data) {
-    return <CircularProgress />;
+    return (
+      <Page title="Firmware">
+        <CircularProgress />
+      </Page>
+    );
   }
 
   return (
-    <Box>
-      <Table columns={columns} rows={data.updates} />
-    </Box>
+    <Page title="Firmware">
+      <Box>
+        <Table columns={columns} rows={data.updates} />
+      </Box>
+    </Page>
   );
 };

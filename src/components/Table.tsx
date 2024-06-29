@@ -20,7 +20,6 @@ export const Table = ({ rows, columns }: TableProps) => {
           },
         }}
         pageSizeOptions={[10, 20, 50]}
-        checkboxSelection
         disableRowSelectionOnClick
       />
     </Box>

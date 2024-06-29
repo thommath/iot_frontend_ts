@@ -1,3 +1,9 @@
+import { Page } from "../components/Page";
+
 export const TasksPage = () => {
-  return <div>Tasks</div>;
+  return (
+    <Page title="Tasks">
+      <></>
+    </Page>
+  );
 };

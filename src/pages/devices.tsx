@@ -1,3 +1,9 @@
+import { Page } from "../components/Page";
+
 export const DevicesPage = () => {
-  return <div>Devices</div>;
+  return (
+    <Page title="Devices">
+      <></>
+    </Page>
+  );
 };
