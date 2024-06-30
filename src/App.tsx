@@ -25,7 +25,13 @@ function App() {
     useAuth0();
   const [token, setToken] = useState<string | null>(null);
   const [tokenError, setTokenError] = useState<string | null>(null);
-  const [darkMode, setDarkMode] = useState(true);
+
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem("darkMode") !== "false"
+  );
+  useEffect(() => {
+    localStorage.setItem("darkMode", String(darkMode));
+  }, [darkMode]);
 
   useEffect(() => {
     if (isAuthenticated) {
