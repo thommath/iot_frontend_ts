@@ -7,7 +7,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { AddFirmwareDto } from "../types/FirmwareTypes";
+import { AddFirmwareDto } from "../../types/FirmwareTypes";
 import {
   AutocompleteElement,
   TextFieldElement,
@@ -15,9 +15,9 @@ import {
 } from "react-hook-form-mui";
 import { MuiFileInput } from "mui-file-input";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addFirmware } from "../api/iot_backend";
+import { addFirmware } from "../../api/iot_backend";
 import { useContext } from "react";
-import { AppContext } from "../contexts/AppContext";
+import { AppContext } from "../../contexts/AppContext";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 type Props = {

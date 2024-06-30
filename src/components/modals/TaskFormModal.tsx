@@ -7,7 +7,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { AddTaskDto, EditTaskDto, Task } from "../types/TaskTypes";
+import { AddTaskDto, EditTaskDto, Task } from "../../types/TaskTypes";
 import {
   CheckboxElement,
   SelectElement,
@@ -15,11 +15,11 @@ import {
   useForm,
 } from "react-hook-form-mui";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addTask } from "../api/mock_backend";
+import { addTask } from "../../api/mock_backend";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import { parseTimestamp } from "../util/dateUtils";
+import { parseTimestamp } from "../../util/dateUtils";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 

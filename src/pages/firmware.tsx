@@ -14,14 +14,14 @@ import {
 } from "../api/iot_backend";
 import { useContext, useState } from "react";
 import { AppContext } from "../contexts/AppContext";
-import { Table } from "../components/Table";
+import { Table } from "../components/table/Table";
 import { GridColDef } from "@mui/x-data-grid";
 import { formatFileSize } from "../util/fileSize";
 import { formatTimestamp, parseTimestamp } from "../util/dateUtils";
 import { Page } from "../components/Page";
-import { FirmwareFormModal } from "../components/FirmwareFormModal";
+import { FirmwareFormModal } from "../components/modals/FirmwareFormModal";
 import AddIcon from "@mui/icons-material/Add";
-import { GenericActionsMenu } from "../components/GenericActionsMenu";
+import { GenericActionsMenu } from "../components/table/GenericActionsMenu";
 import { downloadURI } from "../util/downloadFile";
 
 const columns: GridColDef<Firmware>[] = [

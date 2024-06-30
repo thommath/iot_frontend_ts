@@ -8,14 +8,14 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useContext, useState } from "react";
 import { AppContext } from "../contexts/AppContext";
-import { Table } from "../components/Table";
+import { Table } from "../components/table/Table";
 import { GridColDef } from "@mui/x-data-grid";
 import { formatFileSize } from "../util/fileSize";
 import { formatTimestamp, parseTimestamp } from "../util/dateUtils";
 import { Page } from "../components/Page";
-import { TaskFormModal } from "../components/TaskFormModal";
+import { TaskFormModal } from "../components/modals/TaskFormModal";
 import AddIcon from "@mui/icons-material/Add";
-import { GenericActionsMenu } from "../components/GenericActionsMenu";
+import { GenericActionsMenu } from "../components/table/GenericActionsMenu";
 import { Task } from "../types/TaskTypes";
 import { deleteTask, getTaskList } from "../api/mock_backend";
 

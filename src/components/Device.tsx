@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { Device } from "../types/DeviceTypes";
 import { useContext, useState } from "react";
-import { DeviceFormModal } from "./DeviceFormModal";
+import { DeviceFormModal } from "./modals/DeviceFormModal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteDevice } from "../api/iot_backend";
 import { AppContext } from "../contexts/AppContext";

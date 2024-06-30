@@ -10,11 +10,11 @@ import {
 } from "@mui/material";
 import { TextFieldElement, useForm } from "react-hook-form-mui";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { saveDevice } from "../api/iot_backend";
+import { saveDevice } from "../../api/iot_backend";
 import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../contexts/AppContext";
+import { AppContext } from "../../contexts/AppContext";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { AddDeviceDto, Device } from "../types/DeviceTypes";
+import { AddDeviceDto, Device } from "../../types/DeviceTypes";
 
 type Props = {
   device?: Partial<Device>;
