@@ -8,18 +8,18 @@ type TableProps = {
 
 export const Table = ({ rows, columns }: TableProps) => {
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%", height: "70vh" }}>
       <DataGrid
         rows={rows}
         columns={columns}
         initialState={{
           pagination: {
             paginationModel: {
-              pageSize: 10,
+              pageSize: 100,
             },
           },
         }}
-        pageSizeOptions={[10, 20, 50]}
+        pageSizeOptions={[10, 20, 50, 100]}
         disableRowSelectionOnClick
       />
     </Box>

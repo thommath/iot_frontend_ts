@@ -28,17 +28,17 @@ const columns: GridColDef<Firmware>[] = [
   {
     field: "version",
     headerName: "Version",
-    width: 150,
+    width: 70,
   },
   {
     field: "platform",
     headerName: "Platform",
-    width: 160,
+    width: 100,
   },
   {
     field: "program",
     headerName: "Program",
-    width: 160,
+    flex: 1,
   },
   {
     field: "size",
@@ -50,14 +50,17 @@ const columns: GridColDef<Firmware>[] = [
   {
     field: "date",
     headerName: "Date",
-    width: 110,
+    width: 100,
     type: "date",
     valueFormatter: (value) => formatTimestamp(parseTimestamp(value)),
   },
   {
     field: "actions",
     headerName: "Actions",
-    width: 110,
+    type: "number",
+    disableReorder: true,
+    filterable: false,
+    flex: 1,
     renderCell: (params) => <FirmwareActions firmware={params.row} />,
   },
 ];

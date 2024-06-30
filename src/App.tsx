@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { FirmwarePage } from "./pages/firmware";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -7,7 +7,7 @@ import { CircularProgress } from "@mui/material";
 import { AppContext } from "./contexts/AppContext";
 import { useEffect, useState } from "react";
 import { DevicesPage } from "./pages/devices";
-import { TasksPage } from "./pages/tasks";
+import { TaskPage } from "./pages/tasks";
 
 function App() {
   const { isLoading, error, isAuthenticated, getAccessTokenSilently } =
@@ -53,14 +53,14 @@ function App() {
   }
   return (
     <AppContext.Provider value={{ token }}>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/" index Component={DevicesPage} />
           <Route path="/devices" Component={DevicesPage} />
           <Route path="/firmware" Component={FirmwarePage} />
-          <Route path="/tasks" Component={TasksPage} />
+          <Route path="/tasks" Component={TaskPage} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </AppContext.Provider>
   );
 }
