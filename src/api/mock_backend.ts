@@ -8,8 +8,15 @@ const createTask = (): Task => ({
     title: "Heeey"
 })
 
-export const deleteTask = ({ id }: { id: string }) => Promise.resolve();
-export const getTaskList = async () => {
-    return { tasks: new Array(1000).fill(0).map(createTask) }
+let tasks = new Array(1000).fill(0).map(createTask);
+
+export const deleteTask = async ({ id: deleteId }: { id: string }) => {
+    tasks = tasks.filter(({ id }) => id !== deleteId);
 };
-export const addTask = ({ data }: { data: AddTaskDto }) => Promise.resolve();
+export const getTaskList = async () => ({ tasks: tasks });
+export const addTask = async ({ data }: { data: AddTaskDto }) => {
+    tasks.push(({
+        id: String(Math.random()),
+        ...data
+    }));
+};
