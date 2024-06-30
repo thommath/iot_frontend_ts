@@ -18,6 +18,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { GenericActionsMenu } from "../components/table/GenericActionsMenu";
 import { Task } from "../types/TaskTypes";
 import { deleteTask, getTaskList } from "../api/mock_backend";
+import dayjs from "dayjs";
 
 const columns: GridColDef<Task>[] = [
   {
@@ -33,9 +34,10 @@ const columns: GridColDef<Task>[] = [
   {
     field: "due_date",
     headerName: "Due date",
-    width: 100,
+    width: 150,
     type: "date",
-    valueFormatter: (value) => formatTimestamp(parseTimestamp(value)),
+    valueFormatter: (value) => dayjs(parseTimestamp(value)),
+    renderCell: ({value}) => formatTimestamp(parseTimestamp(value))
   },
   {
     field: "completed",

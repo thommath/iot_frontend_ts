@@ -23,6 +23,7 @@ import { FirmwareFormModal } from "../components/modals/FirmwareFormModal";
 import AddIcon from "@mui/icons-material/Add";
 import { GenericActionsMenu } from "../components/table/GenericActionsMenu";
 import { downloadURI } from "../util/downloadFile";
+import dayjs from "dayjs";
 
 const columns: GridColDef<Firmware>[] = [
   {
@@ -50,9 +51,10 @@ const columns: GridColDef<Firmware>[] = [
   {
     field: "date",
     headerName: "Date",
-    width: 100,
+    width: 150,
     type: "date",
-    valueFormatter: (value) => formatTimestamp(parseTimestamp(value)),
+    valueFormatter: (value) => dayjs(parseTimestamp(value)),
+    renderCell: ({value}) => formatTimestamp(parseTimestamp(value))
   },
   {
     field: "actions",

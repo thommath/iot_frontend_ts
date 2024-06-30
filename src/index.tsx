@@ -7,6 +7,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
+
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "./util/dayjs";
 
 const queryClient = new QueryClient({
@@ -31,19 +34,21 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <Auth0Provider
-      domain="mashaogthomas.eu.auth0.com"
-      clientId="WaScBj2g5J7KlO3vr9kU9XAzXhfogWm1"
-      authorizationParams={{
-        redirect_uri: window.location.origin,
-        audience: "https://iot.mashaogthomas.no",
-      }}
-      cacheLocation="localstorage"
-    >
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
-    </Auth0Provider>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Auth0Provider
+        domain="mashaogthomas.eu.auth0.com"
+        clientId="WaScBj2g5J7KlO3vr9kU9XAzXhfogWm1"
+        authorizationParams={{
+          redirect_uri: window.location.origin,
+          audience: "https://iot.mashaogthomas.no",
+        }}
+        cacheLocation="localstorage"
+      >
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
+      </Auth0Provider>
+    </LocalizationProvider>
   </React.StrictMode>
 );
 

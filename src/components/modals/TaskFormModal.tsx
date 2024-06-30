@@ -20,8 +20,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { parseTimestamp } from "../../util/dateUtils";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 type Props = {
   task?: Partial<Task>;
@@ -91,7 +89,6 @@ export const TaskFormModal = ({ task, open, onClose }: Props) => {
   const values = watch();
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Dialog open={open} onClose={onClose}>
         <form onSubmit={handleSubmit(submit)} noValidate>
           <DialogTitle>
@@ -141,6 +138,5 @@ export const TaskFormModal = ({ task, open, onClose }: Props) => {
           </DialogActions>
         </form>
       </Dialog>
-    </LocalizationProvider>
   );
 };
