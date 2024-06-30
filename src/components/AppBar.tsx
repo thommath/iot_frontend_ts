@@ -14,12 +14,16 @@ import AdbIcon from "@mui/icons-material/Adb";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../contexts/AppContext";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
 
 const pages = ["Devices", "Firmware", "Tasks"];
 
 function ResponsiveAppBar() {
   const { logout } = useAuth0();
   const navigate = useNavigate();
+  const { darkMode, setDarkMode } = React.useContext(AppContext);
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -58,7 +62,7 @@ function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            IOT
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -114,7 +118,7 @@ function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            IOT
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
@@ -129,6 +133,19 @@ function ResponsiveAppBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Toggle dark mode">
+              <IconButton
+                onClick={() => setDarkMode(!darkMode)}
+                sx={{
+                  p: 0,
+                  color: "white",
+                  marginRight: "1rem",
+                }}
+              >
+                {darkMode && <LightModeIcon />}
+                {!darkMode && <DarkModeIcon />}
+              </IconButton>
+            </Tooltip>
             <Tooltip title="Logout">
               <IconButton
                 onClick={() => logout()}

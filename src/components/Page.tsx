@@ -19,22 +19,24 @@ export const Page = ({ title, children, titleEndSlot }: Props) => {
   return (
     <>
       <ResponsiveAppBar />
-      <Container>
-        <Stack
-          justifyContent="space-between"
-          direction="row"
-          alignItems="center"
-        >
-          <Box>
-            <Typography variant="h2" fontSize="2rem" marginY="2rem">
-              {title}
-            </Typography>
-          </Box>
-          <Box>{titleEndSlot}</Box>
-        </Stack>
+      <Paper sx={{ minHeight: "calc(100vh - 64px)", borderRadius: 0 }}>
+        <Container>
+          <Stack
+            justifyContent="space-between"
+            direction="row"
+            alignItems="center"
+          >
+            <Box>
+              <Typography variant="h2" fontSize="2rem" marginY="2rem">
+                {title}
+              </Typography>
+            </Box>
+            <Box>{titleEndSlot}</Box>
+          </Stack>
 
-        {children}
-      </Container>
+          {children}
+        </Container>
+      </Paper>
     </>
   );
 };

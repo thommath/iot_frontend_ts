@@ -29,7 +29,7 @@ export const DeviceCard = ({ device }: Props) => {
   const [openPopupForm, setOpenPopupForm] = useState(false);
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345 }} elevation={4}>
       <CardContent>
         <Typography variant="body1">{device.id}</Typography>
         {device.room && (
