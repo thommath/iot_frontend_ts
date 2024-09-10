@@ -17,6 +17,7 @@ steps:
     SSH_KEY:
       from_secret: SSH_KEY
   commands:
+    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
     - mkdir ~/.ssh
     - echo "$SSH_KEY" | tr -d '\r' | ssh-add -
     - chmod -R 400 ~/.ssh
