@@ -33,7 +33,7 @@ steps:
     - wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O yq
     - chmod +x yq
     - ./yq e -i '.spec.template.spec.containers[0].image |= "10.8.0.14:32000/iot-frontend-ts:${DRONE_COMMIT_SHA:0:7}"' 'iot/frontend-deployment.yaml'
-    - git add iot/deployment.yaml
+    - git add iot/frontend-deployment.yaml
     - git commit -m "Bump iot-frontend-ts to ${DRONE_COMMIT_SHA:0:7}"
     - git push
 
