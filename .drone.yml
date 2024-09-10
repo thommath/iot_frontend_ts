@@ -18,10 +18,12 @@ steps:
       from_secret: SSH_KEY
   commands:
     - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
-    - mkdir ~/.ssh
+    - eval $(ssh-agent -s)
     - echo "$SSH_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - touch ~/.ssh/config
+    - touch ~/.ssh/known_hosts
     - chmod -R 400 ~/.ssh
-    - ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
     - git clone git@github.com:thommath/Homeserver-CD.git
     - ls
