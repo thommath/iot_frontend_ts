@@ -4,13 +4,13 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Auth0Provider } from "@auth0/auth0-react";
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "./util/dayjs";
+import { AuthProvider } from "./AuthProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,19 +35,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Auth0Provider
-        domain="mashaogthomas.eu.auth0.com"
-        clientId="WaScBj2g5J7KlO3vr9kU9XAzXhfogWm1"
-        authorizationParams={{
-          redirect_uri: window.location.origin,
-          audience: "https://iot.mashaogthomas.no",
-        }}
-        cacheLocation="localstorage"
-      >
+      <AuthProvider>
         <QueryClientProvider client={queryClient}>
           <App />
         </QueryClientProvider>
-      </Auth0Provider>
+      </AuthProvider>
     </LocalizationProvider>
   </React.StrictMode>
 );

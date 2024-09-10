@@ -5,9 +5,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { LoginPage } from "./pages/login";
 import { CircularProgress, ThemeProvider, createTheme } from "@mui/material";
 import { AppContext } from "./contexts/AppContext";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DevicesPage } from "./pages/devices";
 import { TaskPage } from "./pages/tasks";
+import { TokenContext } from "./contexts/TokenContext";
 
 const lightTheme = createTheme({
   palette: {
@@ -21,50 +22,13 @@ const darkTheme = createTheme({
 });
 
 function App() {
-  const { isLoading, error, isAuthenticated, getAccessTokenSilently } =
-    useAuth0();
-  const [token, setToken] = useState<string | null>(null);
-  const [tokenError, setTokenError] = useState<string | null>(null);
-
+  const { token } = useContext(TokenContext);
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("darkMode") !== "false"
   );
   useEffect(() => {
     localStorage.setItem("darkMode", String(darkMode));
   }, [darkMode]);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      (async () => {
-        try {
-          const token = await getAccessTokenSilently({
-            authorizationParams: {
-              audience: "https://iot.mashaogthomas.no", // Value in Identifier field for the API being called.
-            },
-          });
-          setToken(token);
-        } catch (error) {
-          console.error(error);
-          setTokenError(String(error));
-        }
-      })();
-    }
-  }, [isAuthenticated, getAccessTokenSilently]);
-
-  if (error) {
-    console.error(error);
-    return <div>Error: {error.name}</div>;
-  }
-  if (tokenError) {
-    return <div>Error: {tokenError}</div>;
-  }
-
-  if (isLoading) {
-    return <CircularProgress />;
-  }
-  if (!isAuthenticated) {
-    return <LoginPage />;
-  }
 
   if (!token) {
     return <CircularProgress />;

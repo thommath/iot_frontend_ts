@@ -1,3 +1,4 @@
+import { isLocal } from "../AuthProvider";
 import { AddDeviceDto, DeviceResponse } from "../types/DeviceTypes";
 import { AddFirmwareDto, FirmwareResponse } from "../types/FirmwareTypes";
 
@@ -11,7 +12,7 @@ const fetchWrapper = async <T>(input: RequestInfo | URL, init?: RequestInit | un
     return response.json() as T
 }
 
-export const iotBackendBaseUrl = "https://iot.mashaogthomas.no/api/";
+export const iotBackendBaseUrl = isLocal ? "http://iot.local.server/api/" : "https://iot.mashaogthomas.no/api/";
 
 type PostApiType = {
     body: BodyInit | null | undefined;
@@ -26,7 +27,7 @@ type BaseApiType = ApiAuth & Partial<PostApiType>;
 
 const apiWrapper = <T>(url: string, { token, method, body, contentType }: BaseApiType) => {
     const headers: Record<string, string> = {};
-    headers["Authorization"] = `Bearer ${token}`;
+    headers["Authorization"] = `${token}`;
     if (contentType) {
         headers["Content-Type"] = contentType;
     }
