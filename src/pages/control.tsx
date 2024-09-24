@@ -2,7 +2,6 @@ import {
   Box,
   CircularProgress,
   List,
-  ListItem,
   ListItemAvatar,
   ListItemButton,
   ListItemText,
@@ -19,7 +18,7 @@ import HouseIcon from "@mui/icons-material/House";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import OutletIcon from "@mui/icons-material/Outlet";
 import PowerIcon from "@mui/icons-material/Power";
-import DeviceUnknownIcon from '@mui/icons-material/DeviceUnknown';
+import DeviceUnknownIcon from "@mui/icons-material/DeviceUnknown";
 import { useNavigate } from "react-router-dom";
 import { useActiveClients } from "../hooks/useActiveClients";
 
@@ -35,9 +34,11 @@ export const ControlPage = () => {
     // Report error to mertics service
     console.error(error || errorRpc);
     return (
-      <Box>
-        <Typography>An error has occured, please send help.</Typography>
-      </Box>
+      <Page title="Control">
+        <Paper>
+          <Typography>An error has occured, please send help.</Typography>
+        </Paper>
+      </Page>
     );
   }
   if (isLoading || !data || loadingRpc) {
@@ -135,9 +136,7 @@ export const DeviceList = ({
           sx={{ ml: 2 }}
           onClick={() => navigate(`/control/device/${device.id}`)}
         >
-          <ListItemAvatar>
-            {Icon(device.id)}
-          </ListItemAvatar>
+          <ListItemAvatar>{Icon(device.id)}</ListItemAvatar>
           <ListItemText>{device.id}</ListItemText>
         </ListItemButton>
       ))}
