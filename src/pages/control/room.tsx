@@ -43,11 +43,6 @@ export const RoomPage = () => {
   const [loadingRpc, setLoadingRpc] = useState(false);
   const [errorRpc, setErrorRpc] = useState<string | null>(null);
 
-  const clientList =
-    data?.clients.filter(
-      (d) => d.room === id && activeClients.includes(d.id)
-    ) || [];
-
   useEffect(() => {
     setLoadingRpc(true);
     callRpc({}, "listClients")
@@ -57,10 +52,8 @@ export const RoomPage = () => {
           return;
         }
         const res = result[0].value;
-        const clients = res.clients
-          .map((clientId) => data?.clients.find((d) => d.id === clientId))
-          .filter((client) => client?.room === id);
-        setActiveClients(clients.map((client) => client?.id) as string[]);
+        const clients = res.clients;
+        setActiveClients(clients);
         setLoadingRpc(false);
       })
       .catch((error: any) => {
@@ -107,6 +100,10 @@ export const RoomPage = () => {
     );
   }
 
+  const clientList =
+    data?.clients.filter(
+      (d) => d.room === id && activeClients.includes(d.id)
+    ) || [];
   return (
     <Container>
       <Typography variant="h6">Active clients</Typography>
