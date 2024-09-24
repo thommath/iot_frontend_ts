@@ -41,6 +41,7 @@ export const RoomPage = () => {
           <Link
             underline="hover"
             color="inherit"
+            sx={{ cursor: "pointer" }}
             onClick={() => navigate("/control")}
           >
             Control

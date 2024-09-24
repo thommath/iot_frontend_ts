@@ -33,30 +33,35 @@ export const DevicePage = () => {
 
   const { readyState } = useSharedWebSocket();
 
-  const Container = useCallback(({ children }: { children: ReactNode }) => (
-    <Page title={`Device: ${id}`}>
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link
-          underline="hover"
-          color="inherit"
-          onClick={() => navigate("/control")}
-        >
-          Control
-        </Link>
-        {data?.room && (
+  const Container = useCallback(
+    ({ children }: { children: ReactNode }) => (
+      <Page title={`Device: ${id}`}>
+        <Breadcrumbs aria-label="breadcrumb">
           <Link
             underline="hover"
+            sx={{ cursor: "pointer" }}
             color="inherit"
-            onClick={() => navigate(`/control/room/${data.room}`)}
+            onClick={() => navigate("/control")}
           >
-            {data.room}
+            Control
           </Link>
-        )}
-        <Typography sx={{ color: "text.primary" }}>{id}</Typography>
-      </Breadcrumbs>
-      <Paper>{children}</Paper>
-    </Page>
-  ), [id, data]);
+          {data?.room && (
+            <Link
+              underline="hover"
+              sx={{ cursor: "pointer" }}
+              color="inherit"
+              onClick={() => navigate(`/control/room/${data.room}`)}
+            >
+              {data.room}
+            </Link>
+          )}
+          <Typography sx={{ color: "text.primary" }}>{id}</Typography>
+        </Breadcrumbs>
+        <Paper>{children}</Paper>
+      </Page>
+    ),
+    [id, data]
+  );
 
   if (error) {
     // Report error to mertics service

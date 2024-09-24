@@ -51,8 +51,8 @@ export const ControlPage = () => {
   const rooms = data.clients.reduce<Record<string, Device[]>>(
     (acc, device) => ({
       ...acc,
-      [device.room || "no room"]: [
-        ...(acc[device.room || "no room"] || []),
+      [device.room || "Without room"]: [
+        ...(acc[device.room || "Without room"] || []),
         device,
       ],
     }),
