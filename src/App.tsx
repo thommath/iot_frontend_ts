@@ -9,6 +9,9 @@ import { useContext, useEffect, useState } from "react";
 import { DevicesPage } from "./pages/devices";
 import { TaskPage } from "./pages/tasks";
 import { TokenContext } from "./contexts/TokenContext";
+import { ControlPage } from "./pages/control";
+import { DevicePage } from "./pages/control/device";
+import { RoomPage } from "./pages/control/room";
 
 const lightTheme = createTheme({
   palette: {
@@ -42,6 +45,9 @@ function App() {
             <Route path="/devices" Component={DevicesPage} />
             <Route path="/firmware" Component={FirmwarePage} />
             <Route path="/tasks" Component={TaskPage} />
+            <Route path="/control" Component={ControlPage} />
+            <Route path="/control/device/:id" Component={DevicePage} />
+            <Route path="/control/room/:id" Component={RoomPage} />
           </Routes>
         </HashRouter>
       </ThemeProvider>

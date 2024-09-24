@@ -18,7 +18,7 @@ import { AppContext } from "../contexts/AppContext";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 
-const pages = ["Devices", "Firmware", "Tasks"];
+const pages = ["Devices", "Firmware", "Tasks", "Control"];
 
 function ResponsiveAppBar() {
   const { logout } = useAuth0();

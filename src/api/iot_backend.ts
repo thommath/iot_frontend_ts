@@ -1,5 +1,5 @@
 import { isLocal } from "../AuthProvider";
-import { AddDeviceDto, DeviceResponse } from "../types/DeviceTypes";
+import { AddDeviceDto, Device, DeviceResponse } from "../types/DeviceTypes";
 import { AddFirmwareDto, FirmwareResponse } from "../types/FirmwareTypes";
 
 // To get fetch to properly work with react query
@@ -59,10 +59,10 @@ export const addFirmware = (params: AddFirmwareType) => {
     });
 }
 
-type DeleteFirmwareType = BaseApiType & {
+type DeviceIdApiType = BaseApiType & {
     id: string
 }
-export const deleteFirmware = (params: DeleteFirmwareType) => apiWrapper<"ok">(iotBackendBaseUrl + "images/" + params.id, {
+export const deleteFirmware = (params: DeviceIdApiType) => apiWrapper<"ok">(iotBackendBaseUrl + "images/" + params.id, {
     token: params.token,
     method: "DELETE",
 });
@@ -70,6 +70,7 @@ export const deleteFirmware = (params: DeleteFirmwareType) => apiWrapper<"ok">(i
 
 
 export const getDevices = (params: BaseApiType) => apiWrapper<DeviceResponse>(iotBackendBaseUrl + "clients", params);
+export const getDevice = (params: DeviceIdApiType) => apiWrapper<Device>(iotBackendBaseUrl + "client?id=" + btoa(params.id), params);
 
 type SaveDeviceType = BaseApiType & {
     data: AddDeviceDto
