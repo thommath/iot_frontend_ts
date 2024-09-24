@@ -19,7 +19,9 @@ import HouseIcon from "@mui/icons-material/House";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import OutletIcon from "@mui/icons-material/Outlet";
 import PowerIcon from "@mui/icons-material/Power";
+import DeviceUnknownIcon from '@mui/icons-material/DeviceUnknown';
 import { useNavigate } from "react-router-dom";
+import { useActiveClients } from "../hooks/useActiveClients";
 
 export const ControlPage = () => {
   const { token } = useContext(TokenContext);
@@ -27,17 +29,18 @@ export const ControlPage = () => {
     queryFn: () => getDevices({ token }),
     queryKey: ["devices"],
   });
+  const { activeClients, loadingRpc, errorRpc } = useActiveClients();
 
-  if (error) {
+  if (error || errorRpc) {
     // Report error to mertics service
-    console.error(error);
+    console.error(error || errorRpc);
     return (
       <Box>
         <Typography>An error has occured, please send help.</Typography>
       </Box>
     );
   }
-  if (isLoading || !data) {
+  if (isLoading || !data || loadingRpc) {
     return (
       <Page title="Control">
         <CircularProgress />
@@ -59,7 +62,7 @@ export const ControlPage = () => {
   return (
     <Page title="Control">
       <Paper>
-        <RoomList rooms={rooms} />
+        <RoomList rooms={rooms} activeClients={activeClients} />
       </Paper>
     </Page>
   );
@@ -67,12 +70,13 @@ export const ControlPage = () => {
 
 type RoomListProps = {
   rooms: Record<string, Device[]>;
+  activeClients: string[];
 };
 
 // Each room should be clickable to navigate to a control page for the room
 // And it should list the devices in the room
 // as a MUI list
-const RoomList = ({ rooms }: RoomListProps) => {
+const RoomList = ({ rooms, activeClients }: RoomListProps) => {
   const navigate = useNavigate();
   return (
     <List>
@@ -88,15 +92,40 @@ const RoomList = ({ rooms }: RoomListProps) => {
             <ListItemText>{room}</ListItemText>
           </ListItemButton>
 
-          {devices.length > 0 && <DeviceList devices={devices} />}
+          {devices.length > 0 && (
+            <DeviceList devices={devices} activeClients={activeClients} />
+          )}
         </React.Fragment>
       ))}
     </List>
   );
 };
 
-export const DeviceList = ({ devices }: { devices: Device[] }) => {
+export const DeviceList = ({
+  devices,
+  activeClients,
+}: {
+  devices: Device[];
+  activeClients: string[];
+}) => {
   const navigate = useNavigate();
+
+  const color = (id: string) =>
+    activeClients.includes(id) ? "primary" : "secondary";
+
+  const Icon = (id: string) => {
+    switch (devices[0].program) {
+      case "ledlights":
+      case "rgbw":
+        return <LightbulbIcon color={color(id)} />;
+      case "smartplug":
+        return <OutletIcon color={color(id)} />;
+      case "goodvibes":
+        return <PowerIcon color={color(id)} />;
+      default:
+        return <DeviceUnknownIcon color={color(id)} />;
+    }
+  };
 
   return (
     <>
@@ -106,21 +135,9 @@ export const DeviceList = ({ devices }: { devices: Device[] }) => {
           sx={{ ml: 2 }}
           onClick={() => navigate(`/control/device/${device.id}`)}
         >
-          {(device.program === "ledlights" || device.program === "rgbw") && (
-            <ListItemAvatar>
-              <LightbulbIcon />
-            </ListItemAvatar>
-          )}
-          {device.program === "smartplug" && (
-            <ListItemAvatar>
-              <OutletIcon />
-            </ListItemAvatar>
-          )}
-          {device.program === "goodvibes" && (
-            <ListItemAvatar>
-              <PowerIcon />
-            </ListItemAvatar>
-          )}
+          <ListItemAvatar>
+            {Icon(device.id)}
+          </ListItemAvatar>
           <ListItemText>{device.id}</ListItemText>
         </ListItemButton>
       ))}
