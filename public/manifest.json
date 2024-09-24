@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "IOT Home",
+  "name": "IOT Home",
   "icons": [
     {
       "src": "favicon.ico",
@@ -13,13 +13,13 @@
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "logo256.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "256x256"
     }
   ],
-  "start_url": ".",
+  "start_url": "./control",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#90caf9",
+  "background_color": "#121212"
 }
