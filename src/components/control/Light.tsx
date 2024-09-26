@@ -105,10 +105,6 @@ type LightState = {
 
 export const Light = ({ id, room, program }: LightProps) => {
   const { send, message } = useSharedWebSocket();
-  const { callRpc } = useRpc({
-    sendMessage: send,
-    lastJsonMessage: message,
-  });
 
   const sendUpdate = (msg: string) => {
     send({ msg, id, room, program });
@@ -118,40 +114,52 @@ export const Light = ({ id, room, program }: LightProps) => {
   const [brightness, setBrightness] = useState<number>(0);
 
   const updateColor = useDebounce(() => {
-    sendUpdate(
-      "c " +
-        color.r +
-        " " +
-        color.g +
-        " " +
-        color.b +
-        " " +
-        Math.round((color.a || 0) * 255)
-    );
+    send({
+      topic: `${id}/ledlights/set`,
+      type: "publish",
+      data: {
+        brightness,
+        r: color.r,
+        g: color.g,
+        b: color.b,
+        w: color.a,
+      },
+    });
   });
 
   useEffect(() => {
-    callRpc({ id, room, program }, "getConfig")
-      .then((result: RpcResult<LightState>[]) => {
-        const firstSuccess = result?.find(
-          (result) => result.status === "fulfilled"
-        );
-        if (!firstSuccess) {
-          return;
-        }
-        const config = (firstSuccess as any).value;
-        setBrightness(config.brightness);
-        setColor({
-          r: config.r,
-          g: config.g,
-          b: config.b,
-          a: config.a,
-        });
-      })
-      .catch(() => {
-        console.warn("getConfig failed");
-      });
-  }, []);
+    if (!id) {
+      return;
+    }
+    send({
+      topic: `${id}/ledlights/status`,
+      type: "subscribe",
+    });
+    send({
+      topic: `${id}/ledlights/getStatus`,
+      type: "publish",
+    });
+  }, [id]);
+
+  useEffect(() => {
+    if (!message) return;
+    if (!message.topic) return;
+
+    if (
+      !message.topic?.endsWith("/ledlights/status") &&
+      !message.topic.endsWith("rgbw/status")
+    ) {
+      return;
+    }
+    if (id && !message.topic?.includes(id)) {
+      return;
+    }
+
+    const { r, g, b, w, brightness } = message.message;
+    setColor({ r, g, b, a: w });
+    setBrightness(brightness);
+    console.log("Done");
+  }, [message]);
 
   return (
     <Grid container spacing={3}>

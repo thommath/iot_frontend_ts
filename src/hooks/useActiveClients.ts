@@ -6,7 +6,7 @@ type ListResponse = {
     clients: string[];
     machines: string[];
     users: string[];
-  };
+};
 
 export const useActiveClients = () => {
     const [activeClients, setActiveClients] = useState<string[]>([]);
@@ -20,22 +20,27 @@ export const useActiveClients = () => {
     });
     useEffect(() => {
         setLoadingRpc(true);
-        callRpc({}, "listClients")
-            .then((result: RpcResult<ListResponse>[]) => {
-                if (!result || !result[0] || result[0].status !== "fulfilled") {
-                    console.error("No result from list");
-                    return;
-                }
-                const res = result[0].value;
-                const clients = res.clients;
-                setActiveClients(clients);
-                setLoadingRpc(false);
-            })
-            .catch((error: any) => {
-                console.error(error);
-                setErrorRpc(error);
-                setLoadingRpc(false);
-            });
+        const callback = () =>
+            callRpc({}, "listClients")
+                .then((result: RpcResult<ListResponse>[]) => {
+                    if (!result || !result[0] || result[0].status !== "fulfilled") {
+                        console.error("No result from list");
+                        return;
+                    }
+                    const res = result[0].value;
+                    const clients = res.clients;
+                    setActiveClients(clients);
+                    setLoadingRpc(false);
+                })
+                .catch((error: any) => {
+                    console.error(error);
+                    setErrorRpc(error);
+                    setLoadingRpc(false);
+                });
+
+        callback();
+        const interval = setInterval(callback, 10_000);
+        return () => clearInterval(interval);
     }, []);
 
     return {

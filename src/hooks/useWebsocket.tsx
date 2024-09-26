@@ -1,11 +1,11 @@
 import { useWebSocket } from "react-use-websocket/dist/lib/use-websocket";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { TokenContext } from "../contexts/TokenContext";
 import { isLocal } from "../AuthProvider";
 
 const useSharedWebSocket = () => {
   const { token } = useContext(TokenContext);
-  
+
   const { lastMessage, readyState, sendJsonMessage, sendMessage } =
     useWebSocket(
       isLocal
@@ -30,10 +30,13 @@ const useSharedWebSocket = () => {
     }
   }, [lastMessage]);
 
-  const message =
-    lastMessage?.data === "ping"
-      ? {}
-      : JSON.parse((lastMessage?.data as null | string) || "{}");
+  const message = useMemo(
+    () =>
+      lastMessage?.data === "ping"
+        ? {}
+        : JSON.parse((lastMessage?.data as null | string) || "{}"),
+    [lastMessage]
+  );
 
   return { send, message, readyState };
 };

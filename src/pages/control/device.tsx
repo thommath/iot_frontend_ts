@@ -1,6 +1,7 @@
 import {
   Box,
   Breadcrumbs,
+  Button,
   CircularProgress,
   Link,
   Paper,
@@ -86,6 +87,7 @@ export const DevicePage = () => {
       {(data.program === "ledlights" || data.program === "rgbw") && (
         <Light id={id} />
       )}
+      {id && <Reboot id={id} />}
     </Container>
   );
 };
@@ -105,6 +107,28 @@ const Properties = ({ data }: PropertiesProps) => {
             <Typography variant="body2">{value}</Typography>
           </Box>
         ))}
+      </Box>
+    </Box>
+  );
+};
+
+
+type RebootProps = {
+  id: string;
+};
+
+const Reboot = ({ id }: RebootProps) => {
+  const { send } = useSharedWebSocket();
+
+  const reboot = () => {
+    send({ msg: "reboot", id });
+  };
+
+  return (
+    <Box>
+      <Typography variant="h5">Reboot</Typography>
+      <Box>
+        <Button onClick={reboot}>Reboot</Button>
       </Box>
     </Box>
   );
