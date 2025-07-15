@@ -2,16 +2,17 @@ kind: pipeline
 type: kubernetes
 name: pixelimage
 steps:
-- name: build-server
-  image: gcr.io/kaniko-project/executor:latest
-  environment:
-    IMAGE_SERVER:
-      from_secret: IMAGE_SERVER
-  args:
-    - --context=.
-    - --destination=registry-service.container-registry:5000/${DRONE_REPO_NAME,,}:${DRONE_COMMIT_SHA:0:7}
-    - --insecure  # only if using insecure registry
-    - --skip-tls-verify  # only if using self-signed certs
+- name: build-and-push
+  image: plugins/kaniko
+  settings:
+    repo: registry-service.container-registry:5000/${DRONE_REPO_NAME,,}
+    username: "dummy"
+    password: "dummy"
+    tags:
+      - latest
+      - ${DRONE_COMMIT_SHA:0:7}
+    insecure: true  # if using HTTP or self-signed certs
+    skip_tls_verify: true  # if your registry uses self-signed TLS
 
 - name: update manifest repo
   image: alpine/git
