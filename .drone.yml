@@ -17,8 +17,10 @@ steps:
       - ${DRONE_COMMIT_SHA:0:7}
     insecure: true  # if using HTTP or self-signed certs
     skip_tls_verify: true  # if your registry uses self-signed TLS
-    cache_repo: registry-service.container-registry:5000/cache/kaniko-cache
-    cache: true
+    build_args:
+      - --cache=true
+      - --cache-repo=registry-service.container-registry:5000/cache/kaniko-cache
+      - --cache-ttl=168h
 
 - name: update manifest repo
   image: alpine/git
