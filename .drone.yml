@@ -3,18 +3,13 @@ type: kubernetes
 name: pixelimage
 steps:
 - name: build-server
-  image: docker:dind
-  volumes:
-  - name: docker_sock
-    path: /var/run
+  image: gcr.io/kaniko-project/executor:latest
   environment:
     IMAGE_SERVER:
       from_secret: IMAGE_SERVER
   commands:
     - export IMAGE_TAG="$IMAGE_SERVER/${DRONE_REPO_NAME,,}:${DRONE_COMMIT_SHA:0:7}"
-    - echo $DRONE_REPO_NAME
-    - docker build . -t $IMAGE_TAG
-    - docker push $IMAGE_TAG
+    - /kaniko/executor --context . --destination $IMAGE_TAG --insecure --skip-tls-verify
 
 - name: update manifest repo
   image: alpine/git
