@@ -7,7 +7,7 @@ steps:
   settings:
     registry:
       from_secret: K8S_REGISTRY
-    repo: ${DRONE_REPO_NAME,,}
+    repo: registry-service.container-registry:5000${DRONE_REPO_NAME,,}
     username:
       from_secret: REGISTRY_USERNAME
     password:
