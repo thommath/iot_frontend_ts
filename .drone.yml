@@ -9,7 +9,7 @@ steps:
       from_secret: IMAGE_SERVER
   args:
     - --context=.
-    - --destination=${IMAGE_SERVER}/${DRONE_REPO_NAME,,}:${DRONE_COMMIT_SHA:0:7}
+    - --destination=registry-service.container-registry:5000/${DRONE_REPO_NAME,,}:${DRONE_COMMIT_SHA:0:7}
     - --insecure  # only if using insecure registry
     - --skip-tls-verify  # only if using self-signed certs
 
