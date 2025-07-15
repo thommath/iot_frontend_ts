@@ -8,7 +8,7 @@ steps:
     K8S_REGISTRY:
       from_secret: K8S_REGISTRY
   settings:
-    repo: ${K8S_REGISTRY}/${DRONE_REPO_NAME,,}
+    repo: $K8S_REGISTRY/${DRONE_REPO_NAME,,}
     username:
       from_secret: REGISTRY_USERNAME
     password:
@@ -24,10 +24,10 @@ steps:
   environment:
     SSH_KEY:
       from_secret: SSH_KEY
-    IMAGE_SERVER:
-      from_secret: IMAGE_SERVER
+    K8S_REGISTRY:
+      from_secret: K8S_REGISTRY
   commands:
-    - export IMAGE_TAG="$IMAGE_SERVER/${DRONE_REPO_NAME,,}:${DRONE_COMMIT_SHA:0:7}"
+    - export IMAGE_TAG="$K8S_REGISTRY/${DRONE_REPO_NAME,,}:${DRONE_COMMIT_SHA:0:7}"
     - export LINE=".spec.template.spec.containers[0].image |= \"$IMAGE_TAG\""
 
     - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
