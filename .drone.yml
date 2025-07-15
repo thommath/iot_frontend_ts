@@ -3,7 +3,7 @@ type: kubernetes
 name: pixelimage
 steps:
 - name: build-server
-  image: ghcr.io/googlecontainertools/kaniko-project/executor:latest
+  image: omio/gcr.io.kaniko-project.executor:latest
   environment:
     IMAGE_SERVER:
       from_secret: IMAGE_SERVER
