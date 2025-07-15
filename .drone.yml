@@ -6,8 +6,9 @@ steps:
   image: plugins/kaniko
   settings:
     repo: registry-service.container-registry:5000/${DRONE_REPO_NAME,,}
-    username: "dummy"
-    password: "dummy"
+    username: "owowow"
+    password:
+      from_secret: REGISTRY_PASSWORD
     tags:
       - latest
       - ${DRONE_COMMIT_SHA:0:7}
