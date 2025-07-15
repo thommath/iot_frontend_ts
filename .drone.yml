@@ -4,9 +4,13 @@ name: pixelimage
 steps:
 - name: build-and-push
   image: plugins/kaniko
+  environment:
+    K8S_REGISTRY:
+      from_secret: K8S_REGISTRY
   settings:
-    repo: registry-service.container-registry:5000/${DRONE_REPO_NAME,,}
-    username: "owowow"
+    repo: ${K8S_REGISTRY}/${DRONE_REPO_NAME,,}
+    username:
+      from_secret: REGISTRY_USERNAME
     password:
       from_secret: REGISTRY_PASSWORD
     tags:
